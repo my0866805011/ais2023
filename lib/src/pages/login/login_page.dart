@@ -1,3 +1,4 @@
+import 'package:ais2023/src/pages/routes.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -33,7 +34,7 @@ class _LoginPageState extends State<LoginPage> {
           child: Card(
             child:Container(
               padding: const EdgeInsets.all(32),
-              height: 320,           
+              height: 400,           
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 //mainAxisAlignment: MainAxisAlignment.center,
@@ -57,9 +58,13 @@ class _LoginPageState extends State<LoginPage> {
   
  void _printUsername() {
  print("Login with  ${_userNameCtl.text},${_passwordCtl.text}");
-
-    
+ Navigator.pushNamed(context, AppRoute.home);  
   }
+
+void _buttonResgister() {
+  Navigator.pushNamed(context, AppRoute.register);
+}
+
   _buildTextFields(){
     return [
       TextField(
@@ -79,9 +84,14 @@ class _LoginPageState extends State<LoginPage> {
           onPressed: ()=>_printUsername(),
            child: const Text('Login')
             ),
-        SizedBox(height: 16,) ,   
+         
+         OutlinedButton(onPressed: ()=>_buttonResgister(), 
+           child: const Text('Register'),
+          ),
+
         OutlinedButton(onPressed: ()=>_userNameReset(), 
-           child: const Text('Reset'),)
+           child: const Text('Reset'),
+          ),
 
     ];
   
