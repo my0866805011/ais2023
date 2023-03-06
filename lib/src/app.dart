@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
 
 
     return MultiBlocProvider(
-      providers:[],
+      providers:[loginBloc],
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(

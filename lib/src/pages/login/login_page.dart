@@ -1,5 +1,8 @@
 import 'package:ais2023/src/pages/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../bloc/login/login_bloc.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -46,7 +49,7 @@ class _LoginPageState extends State<LoginPage> {
                   ..._buildButtons(),
                   Row(
                     children: [
-                      Text("Debug: $count"),
+                      Text("Debug: ${context.read<LoginBloc>().state.count}"),
                       IconButton(
                         onPressed: () {
                           count = count + 1;
