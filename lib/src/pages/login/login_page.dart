@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../bloc/login/login_bloc.dart';
+import '../../models/user.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -15,7 +16,6 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _userNameCtl = TextEditingController();
   final TextEditingController _passwordCtl = TextEditingController();
 
-
   @override
   void initState() {
     super.initState();
@@ -27,7 +27,11 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Login'),
+        title: BlocBuilder<LoginBloc, LoginState>(
+          builder: (context, state) {
+            return Text("Login Page :${state.count}");
+          },
+        ),
       ),
       body: Container(
         width: double.infinity,
@@ -43,30 +47,34 @@ class _LoginPageState extends State<LoginPage> {
                 //mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ..._buildTextFields(),
-                  const SizedBox(
-                    height: 32,
+                    BlocBuilder<LoginBloc, LoginState>(
+                    builder: (context, state) {
+                      return  Text(
+                        "Login Result: ${state.isAuthened ? "Success" : "Error"}");
+                    },
                   ),
+                 
+                  const SizedBox(height: 32,),
                   ..._buildButtons(),
                   Row(
                     children: [
                       //
                       //Text("Debug: ${context.read<LoginBloc>().state.count}"),
-                      BlocBuilder<LoginBloc, LoginState>
-                      (builder: (context, state) {
-                        return Text("DebugX: ${state.count}");
-                       },
+                      BlocBuilder<LoginBloc, LoginState>(
+                        builder: (context, state) {
+                          return Text("DebugX: ${state.count}");
+                        },
                       ),
-                      IconButton( 
-                        //onPressed: context.read()<LoginBloc>().add(LoginEventAdd()),
-
-                        onPressed:() {},
+                      IconButton(
+                        onPressed: () =>
+                            context.read<LoginBloc>().add(LoginEventAdd()),
                         icon: const Icon(Icons.add),
                       ),
 
                       IconButton(
-                       // onPressed: context.read()<LoginBloc>().add(LonginEventRemove()),
-                       onPressed: () {},
-                       icon: const Icon(Icons.remove),
+                        onPressed: () =>
+                            context.read<LoginBloc>().add(LonginEventRemove()),
+                        icon: const Icon(Icons.remove),
                       )
                     ],
                   ),
@@ -84,9 +92,15 @@ class _LoginPageState extends State<LoginPage> {
     _passwordCtl.text = '1234';
   }
 
-  void _printUsername() {
-    print("Login with  ${_userNameCtl.text},${_passwordCtl.text}");
-    Navigator.pushNamed(context, AppRoute.home);
+  void _buttomLogin() {
+   // print("Login with  ${_userNameCtl.text},${_passwordCtl.text}");
+   // Navigator.pushNamed(context, AppRoute.home);
+    final user = User(
+      username: _userNameCtl.text,
+      password: _passwordCtl.text,
+    );
+    context.read<LoginBloc>().add(LonginEventLogin(user));
+
   }
 
   void _buttonResgister() {
@@ -109,7 +123,7 @@ class _LoginPageState extends State<LoginPage> {
   _buildButtons() {
     return [
       ElevatedButton(
-          onPressed: () => _printUsername(), child: const Text('Login')),
+          onPressed: () => _buttomLogin(), child: const Text('Login')),
       OutlinedButton(
         onPressed: () => _buttonResgister(),
         child: const Text('Register'),
