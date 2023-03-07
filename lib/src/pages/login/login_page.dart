@@ -14,7 +14,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _userNameCtl = TextEditingController();
   final TextEditingController _passwordCtl = TextEditingController();
-  int count = 0;
+
 
   @override
   void initState() {
@@ -49,21 +49,24 @@ class _LoginPageState extends State<LoginPage> {
                   ..._buildButtons(),
                   Row(
                     children: [
-                      Text("Debug: ${context.read<LoginBloc>().state.count}"),
-                      IconButton(
-                        onPressed: () {
-                          count = count + 1;
-                          setState(() {});
-                        },
-                        icon: Icon(Icons.add),
+                      //
+                      //Text("Debug: ${context.read<LoginBloc>().state.count}"),
+                      BlocBuilder<LoginBloc, LoginState>
+                      (builder: (context, state) {
+                        return Text("DebugX: ${state.count}");
+                       },
                       ),
-                      IconButton(onPressed: () {
-                        count = count-1;
-                        setState(() {
-                          
-                        });
-                      },
-                       icon: Icon(Icons.remove),
+                      IconButton( 
+                        //onPressed: context.read()<LoginBloc>().add(LoginEventAdd()),
+
+                        onPressed:() {},
+                        icon: const Icon(Icons.add),
+                      ),
+
+                      IconButton(
+                       // onPressed: context.read()<LoginBloc>().add(LonginEventRemove()),
+                       onPressed: () {},
+                       icon: const Icon(Icons.remove),
                       )
                     ],
                   ),
@@ -94,11 +97,11 @@ class _LoginPageState extends State<LoginPage> {
     return [
       TextField(
         controller: _userNameCtl,
-        decoration: InputDecoration(labelText: 'Username'),
+        decoration: const InputDecoration(labelText: 'Username'),
       ),
       TextField(
         controller: _passwordCtl,
-        decoration: InputDecoration(labelText: 'Password'),
+        decoration: const InputDecoration(labelText: 'Password'),
       ),
     ];
   }
